@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-ARG VITE_API_URL=http://localhost:5000
+ARG VITE_API_URL=https://recipe-backend-704935567219.us-central1.run.app
 ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
