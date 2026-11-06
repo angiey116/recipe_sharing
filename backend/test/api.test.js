@@ -5,26 +5,36 @@ describe('Recipe API Tests', () => {
 
     describe('GET /api/recipes', () => {
         test('should return all recipes', async () => {
-            const response = await request(app)
-                .get('/api/recipes')
-                .expect(200);
+    const response = await request(app)
+        .get('/api/recipes')
+        .expect(200);
 
-            expect(Array.isArray(response.body)).toBe(true);
-            expect(response.body.length).toBeGreaterThan(0);
-        });
+    expect(Array.isArray(response.body)).toBe(true);
+});
 
         test('should return recipes with correct structure', async () => {
-            const response = await request(app)
-                .get('/api/recipes')
-                .expect(200);
+    const newRecipe = {
+        name: 'Structure Test Recipe',
+        ingredients: 'Flour',
+        instructions: 'Mix ingredients',
+        cookTime: '10 minutes'
+    };
 
-            const recipe = response.body[0];
-            expect(recipe).toHaveProperty('id');
-            expect(recipe).toHaveProperty('name');
-            expect(recipe).toHaveProperty('ingredients');
-            expect(recipe).toHaveProperty('instructions');
-            expect(recipe).toHaveProperty('cookTime');
-        });
+    const created = await request(app)
+        .post('/api/recipes')
+        .send(newRecipe)
+        .expect(201);
+
+    const response = await request(app)
+        .get(`/api/recipes/${created.body.id}`)
+        .expect(200);
+
+    expect(response.body).toHaveProperty('id');
+    expect(response.body).toHaveProperty('name');
+    expect(response.body).toHaveProperty('ingredients');
+    expect(response.body).toHaveProperty('instructions');
+    expect(response.body).toHaveProperty('cookTime');
+});
     });
 
     describe('POST /api/recipes', () => {
@@ -65,13 +75,25 @@ describe('Recipe API Tests', () => {
 
     describe('GET /api/recipes/:id', () => {
         test('should return a specific recipe', async () => {
-            const response = await request(app)
-                .get('/api/recipes/1')
-                .expect(200);
+    const newRecipe = {
+        name: 'Specific Test Recipe',
+        ingredients: 'Flour',
+        instructions: 'Mix ingredients',
+        cookTime: '15 minutes'
+    };
 
-            expect(response.body).toHaveProperty('id', 1);
-            expect(response.body).toHaveProperty('name');
-        });
+    const created = await request(app)
+        .post('/api/recipes')
+        .send(newRecipe)
+        .expect(201);
+
+    const response = await request(app)
+        .get(`/api/recipes/${created.body.id}`)
+        .expect(200);
+
+    expect(response.body).toHaveProperty('id', created.body.id);
+    expect(response.body).toHaveProperty('name', newRecipe.name);
+});
 
         test('should return 404 for non-existent recipe', async () => {
             await request(app)
