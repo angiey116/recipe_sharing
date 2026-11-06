@@ -34,3 +34,14 @@ jobs:
             --region us-central1 \
             --project project-7472d20a-07f9-4a91-830 \
             --quiet
+
+            
+      - name: Deploy frontend to Cloud Run
+        run: |
+          gcloud run deploy recipe-frontend \
+            --source ./frontend \
+            --region us-central1 \
+            --project project-7472d20a-07f9-4a91-830 \
+            --allow-unauthenticated \
+            --quiet
+
