@@ -2,16 +2,6 @@ const request = require('supertest');
 const app = require('../server');
 
 describe('Recipe API Tests', () => {
-    let server;
-
-    beforeAll(() => {
-        // Start server on a different port for testing
-        server = app.listen(5001);
-    });
-
-    afterAll(() => {
-        server.close();
-    });
 
     describe('GET /api/recipes', () => {
         test('should return all recipes', async () => {
