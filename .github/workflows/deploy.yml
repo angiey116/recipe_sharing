@@ -18,6 +18,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Test backend
+        working-directory: ./backend
+        run: |
+          npm ci
+          npm test
+
+      - name: Test frontend
+        working-directory: ./frontend
+        run: |
+          npm ci
+          npm test
+
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
